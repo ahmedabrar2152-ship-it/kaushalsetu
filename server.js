@@ -110,4 +110,4 @@ app.use('/api', (req,res)=>res.status(404).json({error:'API endpoint not found'}
 app.use('/uploads',(req,res)=>res.status(404).end());
 app.use(express.static(__dirname,{index:'index.html',dotfiles:'deny',setHeaders:(res,file)=>{if(file.endsWith('.js')||file.endsWith('.css'))res.setHeader('Cache-Control','no-cache')}}));
 app.use((err,req,res,next)=>{if(res.headersSent)return next(err);const status=err.code==='LIMIT_FILE_SIZE'?413:err.message?.startsWith('Only PDF')?400:(err.status||err.statusCode||500);if(status>=500)console.error(err);res.status(status).json({error:status>=500?'The server could not complete the request':err.message||'Request failed'})});
-pool.query('select 1').then(()=>app.listen(port,'127.0.0.1',()=>console.log(`KaushalSetu server listening at http://127.0.0.1:${port}`))).catch(err=>{console.error('Database connection failed:',err.message);process.exit(1)});
+pool.query('select 1').then(()=>app.listen(port,'0.0.0.0',()=>console.log(`KaushalSetu server listening at http://0.0.0.0:${port}`))).catch(err=>{console.error('Database connection failed:',err.message);process.exit(1)});
